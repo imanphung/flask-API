@@ -1,0 +1,6 @@
+flask
+flask_restful
+wtforms
+flask_wtf
+requests
+schedule
