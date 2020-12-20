@@ -4,7 +4,7 @@ import sqlite3
 import time
 import datetime
 import schedule
-
+from flask import jsonify
 
 
 class Weather(object):
@@ -80,8 +80,66 @@ class Weather(object):
         uvindex = r2_data["vt1observation"]['uvIndex']
 
         return r2_data
+    
+    
+    def the_weather_get(self,name='Ho Chi Minh'):
+        """
+        :param name: Takes name as String
+        :return: Weather Information
+        """
 
+        self.__url_weather = "https://community-open-weather-map.p.rapidapi.com/weather"
+        self.__headers = {
+            'x-rapidapi-key': "6e3b89e9d1msh988c7168dd3cc7fp1c8177jsn96c9c26a0d5b",
+            'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com"
+        }
+
+        params= {
+            "q": name,
+            "lat":"0",
+            "lon":"0",
+            "callback":"test",
+            "id":"2172797",
+            "lang":"null",
+            "units":"\"metric\" or \"imperial\"",
+            "mode":"xml, html"
+        }
+        
+
+        r2 = requests.get(url=self.__url_weather,headers=self.__headers,params=params)
+
+        r2_data = json.loads(r2.text[5:-1])
+        print(r2_data)
+
+        city_name = r2_data["name"]+ ' - ' + r2_data["sys"]["country"]
+        feelsLike = r2_data["main"]["feels_like"]
+        humidity = r2_data["main"]["humidity"]
+        temp = r2_data["main"]["temp"]
+        temp_min = r2_data["main"]["temp_min"]
+        temp_max = r2_data["main"]["temp_max"]
+        visibility = r2_data["visibility"]
+
+        windspeed = r2_data["wind"]["speed"]
+        winddegree = r2_data["wind"]["deg"]
+        description = r2_data["weather"][0]["description"]
+        icon = "http://openweathermap.org/img/w/" + r2_data["weather"][0]["icon"] + ".png"
+        
+        data = {
+            "city_name": city_name,
+            "feelsLike": feelsLike,
+            "humidity": humidity,
+            "temp": temp,
+            "temp_min": temp_min,
+            "temp_max": temp_max,
+            "visibility": visibility,
+            "windspeed": windspeed,
+            "winddegree": winddegree,
+            "description": description,
+            "icon": icon
+        }
+
+        return r2_data
 
 
 w = Weather()
-data = w.weather_get(zip='06604')
+data = w.the_weather_get(name='Ho Chi Minh')

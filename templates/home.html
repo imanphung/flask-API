@@ -2,25 +2,22 @@
 {% block content %}
 
 <div id="Outer" class="jumbotron jumbotron-fluid">
-  <h1 style="color:white; text-align:center; font-size:60px;"> Weather API </h1>
+  <h1 style="color:white; text-align:center; font-size:60px;"> {{data["name"]+ ' - ' + data["sys"]["country"]}} </h1>
 
   <div class="container">
-    <h1 id="Weather"class="display-4"> Today's Weather </h1>
+    <h1 id="Weather"class="display-4"> Today's Weather 
+        <img src={{"http://openweathermap.org/img/w/" + data["weather"][0]["icon"] + ".png"}} alt="place bear" />
+    </h1>
 
       <br>
       <div class="Data">
-
-
-          <h2 style="color:white; font-size:55px;" >{{data["vt1observation"]["temperature"]}}<sup class="Degree" >o</sup> </h2>
-          <h2 style="color:white; font-size:30px;" >{{data["vt1observation"]["phrase"]}} </h2>
-          <h2 style="color:white; font-size:30px;" > Feel like {{data["vt1observation"]["feelsLike"]}}<sup>o</sup> </h2>
-          <h2 style="color:white; font-size:30px;" > UV Index {{data["vt1observation"]["uvIndex"]}}/10 {{data["vt1observation"]['uvDescription']}} </h2>
+          <h2 style="color:white; font-size:55px;" >{{data["weather"][0]["description"]}}<sup class="Degree" ></sup> </h2>
+          <h2 style="color:white; font-size:30px;" > Temperature {{data["main"]["temp"]}}<sup>o</sup> </h2>
+          <h2 style="color:white; font-size:30px;" > Feel like {{data["main"]["feels_like"]}}<sup>o</sup> </h2>
           <br>
-
-            <h2 style="color:white; font-size:30px;" > Wind Speed {{data["vt1observation"]["windSpeed"]}} Mph</h2>
-            <h2 style="color:white; font-size:30px;" > Wind Direction  {{data["vt1observation"]["windDirDegrees"]}}<sup>o</sup>  {{data["vt1observation"]["windDirCompass"]}}</h2>
-            <h2 style="color:white; font-size:30px;" > Humidity  {{data["vt1observation"]["humidity"]}} %</h2>
-            <h2 style="color:white; font-size:30px;" > Dew Point  {{  data["vt1observation"]["dewPoint"]  }} </h2>
+            <h2 style="color:white; font-size:30px;" > Wind Speed {{data["wind"]["speed"]}} Mph</h2>
+            <h2 style="color:white; font-size:30px;" > Wind Degree  {{data["wind"]["deg"]}}<sup>o</sup></h2>
+            <h2 style="color:white; font-size:30px;" > Humidity  {{data["main"]["humidity"]}} %</h2>
             <br>
             <br>
 
@@ -28,7 +25,7 @@
 
                 <div id="searchbar" class="form-group">
                   {{  form.hidden_tag()  }}
-                  {{ form.search(placeholder = "Enter Zip Code ", class="form-group" ) }}
+                  {{ form.search(placeholder = "Enter Area Name ", class="form-group" ) }}
                   {{ form.button( class = 'btn btn-dark'  )  }}
                 </div>
 
@@ -59,7 +56,7 @@
     .container{
       margin-left: auto;
       margin-right: auto;
-      margin-top:8%;
+      margin-top:2%;
       width: 600px;
       height: auto;
       padding: 10px;
